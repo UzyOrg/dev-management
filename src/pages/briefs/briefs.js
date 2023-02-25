@@ -21,74 +21,85 @@ function Briefs() {
     const [view, setView] = useState('active');
     const [userView, setUserView] = useState('mine');
     const user = localStorage.getItem('user');
-
+    console.log(user)
     useEffect(() => {
-        axios.get('https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/getall?containerId=briefs').then(res => {
+        axios.get('https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getAll?databaseId=dev&containerId=projects').then(res => {
+            console.log('entro')
             if(res.data !== 'No items found') {
-                setBriefs(res.data.filter(brief => !brief.stalled && brief.assignedTo.name === user));
+                console.log(res.data)
+                // setBriefs(res.data.filter(brief => !brief.stalled && brief.assignedTo?.name === user));
+                setBriefs(res.data);
                 setUnfilteredBriefs(res.data);
+                console.log('si jaló')
+            }else{
+                console.log('no items found')
             }
             setLoading(false);
-        })
+        }).catch((e)=>console.log(e))
+        console.log('salio')
     }, []);
 
-    useEffect(() =>{
-        async function getAllUsers() {
-            const token =await checkToken();
+    async function getAllUsers() {
+        const token = await checkToken();
+        axios.get('https://graph.microsoft.com/v1.0/users?$top=999', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(res => {
+            console.log(res.data)
+        })
+    };
 
-            axios.get('https://graph.microsoft.com/v1.0/users?$top=999', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(res => {
-                console.log(res)
-                    //console.log(res.data.value.filter(user => user && user.id === '6d8192e3-f52c-4d14-b9e7-8e8a83ae8fd2'))
-                    let emails = res.data.value.map(user => {
-                        if(typeof user.mail === 'string') return user.mail
-                        else return ''
-                    });
-                    setUserEmails([...userEmails, ...emails]);
-                    //res.data.value.map(user => console.log(user.mail))
-                })
-        }
+    useEffect(() => {
         getAllUsers();
     }, []);
 
+    // useEffect(() =>{
+    //     async function getAllUsers() {
+    //         const token = await checkToken();
+           
+    //         axios.get('https://graph.microsoft.com/v1.0/users?$top=999', {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         }).then(res => {
+    //             console.log(res)
+    //                 //console.log(res.data.value.filter(user => user && user.id === '6d8192e3-f52c-4d14-b9e7-8e8a83ae8fd2'))
+    //                 let emails = res.data.value.map(user => {
+    //                     if(typeof user.mail === 'string') return user.mail
+    //                     else return ''
+    //                 });
+    //                 setUserEmails([...userEmails, ...emails]);
+    //                 //res.data.value.map(user => console.log(user.mail))
+    //             })
+    //     }
+    //     getAllUsers();
+    // }, []);
+
     const columns = [
-        {field: 'id', headerName: 'ID'},
-        {field: 'dueDate', headerName: 'Due Date', renderCell: (params) => (
-            (params.row.dueDateType && params.row.dueDateType) === 'specificDay'
-                ?   new Date(params.row.dueDate).toLocaleDateString()
-                :   params.row.dueDate
-        )},
-        {field: 'type', headerName: 'Video Type', flex: .5},
-        {field: 'name', headerName: 'Brief Name', flex: .75},
-        {field: 'location', headerName: 'Location', flex: .5, valueGetter: (params) => params.row.request ? params.row.request.location : params.row.location},
-        {field: 'submitted', headerName: 'Requested', valueGetter: (params) => params.row.submitted ? new Date(params.row.submitted).toLocaleDateString() : 'N/A', flex: .5},
-        {field: 'created', headerName: 'Brief Created', valueGetter: (params) => new Date(params.row.created).toLocaleDateString(), flex: .5},
-        {field: 'assignedTo', headerName: 'Assigned To', flex: .5, valueGetter: (params) => params.row.assignedTo.name},
+        { field: "id", headerName: "ID" },
+        { field: "assignedTo", headerName: "Assigned to", flex:0.20 },
         {
-            field: 'status', 
-            headerName: 'Status', 
-            renderCell: (params) => {
-                
-                if(params.row.completed) {
-                    return <Typography variant='body2' sx={{color: 'green'}}>Complete</Typography>
-                }
-
-                else if(params.row.milestones.length > 0) {
-                    let incomplete = params.row.milestones.filter(milestone => milestone.percentComplete !== 100);
-                    if(incomplete.length === 0) {
-                        let index = params.row.milestones.length - 1;
-                        return <Typography variant='body2'>{params.row.milestones[index].resource}</Typography>
-                    }
-                    return <Typography variant='body2'>{incomplete[0].resource}</Typography>
-                }
-
-                return <Typography variant='body2'>New Brief</Typography>
-            }
-        }
-    ];
+          field: "date",
+          headerName: "Due Date",
+          renderCell: (params) =>
+            (params.row.dueDateType && params.row.dueDateType) === "specificDay"
+              ? new Date(params.row.dueDate).toLocaleDateString()
+              : params.row.dueDate,
+        },
+    
+        { field: "media", headerName: "project", flex: 0.2 },
+        { field: "link", headerName: "Link", flex: 0.2 },
+        { field: "details", headerName: "Description", flex: 0.75 },
+        {
+          field: "status",
+          headerName: "Status",
+          flex: 0.20,
+          renderCell: (params) => {
+            if(params.row.status === "Completed") {return <Typography variant='body2' sx={{color: 'green'}}>Completed</Typography>}
+          }
+        },
+      ];
 
     function redirect(params) {
         navigate(`/briefs/${params.row.id}`)

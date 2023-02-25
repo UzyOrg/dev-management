@@ -87,15 +87,10 @@ export default function PageLayout(props) {
             icon: <Camera />
         },
         {
-            text: 'Creative Briefs',
+            text: 'Projects',
             href: '/briefs',
             icon: <Article />
         },
-        // {
-        //     text: 'Projects',
-        //     href: '/projects',
-        //     icon: <ListAlt />
-        // },
         {
             text: 'Calendar',
             href: '/calendar',
@@ -127,7 +122,7 @@ export default function PageLayout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-                Project Management
+                Family Tree
           </Typography>
 
           {/* <Button 

@@ -55,7 +55,8 @@ function OpenBrief() {
     const [newMilestone, setNewMilestone] = useState({
         startDate: new Date(),
         endDate: new Date(),
-        percentComplete: 0
+        percentComplete: 0,
+        resource: 'DEVELOPMENT',
     });
     const [displayNote, setDisplayNote] = useState(false);
     const [note, setNote] = useState({});
@@ -69,10 +70,10 @@ function OpenBrief() {
     }
 
     const resources = [
+        'DESIGN',
         'DEVELOPMENT',
-        'PRE-PRODUCTION',
-        'PRINCIPAL PHOTOGRAPHY',
-        'POST PRODUCTION',
+        'TESTING',
+        'DEPLOYMENT',
         'COMPLETED'
     ];
 
@@ -83,8 +84,9 @@ function OpenBrief() {
     ];
 
     useEffect(() => {
-        axios.get(`https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/getbyid?containerId=briefs&id=${id}`).then(res => {
-            setBrief(res.data);
+        axios.get(`http://localhost:7071/api/getById?databaseId=dev&containerId=projects`).then(res => {
+        console.log('si jalo el getBId')    
+        setBrief(res.data);
             if(res.data.milestones) {
                 setMilestones(res.data.milestones)
             }
@@ -230,7 +232,7 @@ function OpenBrief() {
         let token = await checkToken();
 
         let history = [{
-            action: `Brief reassigned to ${assignedTo.name}`,
+            action: `Project reassigned to ${assignedTo.name}`,
             date: new Date().getTime(),
             user: localStorage.getItem('user'),
             id: uuidv4()
@@ -294,7 +296,7 @@ function OpenBrief() {
     };
 
     function editPhase(e) {
-        if(e.target.value === 'POST PRODUCTION' || e.target.value === 'COMPLETED') {
+        if(e.target.value === 'TESTING' || e.target.value === 'DEPLOYMENT') {
             setNewMilestone({
                 ...newMilestone,
                 resource: e.target.value
@@ -328,7 +330,7 @@ function OpenBrief() {
             })
         })
     }
-
+console.log(brief)
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Modal

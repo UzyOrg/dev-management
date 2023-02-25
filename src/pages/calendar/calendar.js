@@ -28,8 +28,11 @@ function Calendar() {
     }
 
     const colors = {
+        'DESIGN': '#ff3366', 
         'DEVELOPMENT': '#ff3366', 
         'PRE-PRODUCTION': '#3399ff', 
+        'TESTING': '#3399ff', 
+        'DEPLOYMENT': '#00cc00', 
         'PRINCIPAL PHOTOGRAPHY': '#00cc00', 
         'AWAITING EDITING': '#33000', 
         'ACTIVE EDITING': '#ff6600', 

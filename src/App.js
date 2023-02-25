@@ -13,6 +13,7 @@ import OpenRequest from './pages/openRequest/openRequest';
 import Briefs from './pages/briefs/briefs';
 import OpenBrief from './pages/openBrief/openBrief';
 import Reports from './pages/reports/reports';
+import Hierarchy from './pages/hierarchy';
 
 LicenseInfo.setLicenseKey('f94999c7685f2608811fb8b48423f2baTz00ODIyNyxFPTE2OTA3Mzk3NTYzNjgsUz1wcm8sTE09c3Vic2NyaXB0aW9uLEtWPTI=');
 
@@ -36,6 +37,7 @@ function App() {
         <Route exact path='/briefs' element={<Briefs />} />
         <Route exact path='/briefs/:id' element={<OpenBrief />} />
         <Route exact path='/reports' element={<Reports />} />
+        <Route exact path='/hierarchy' element={<Hierarchy />} />
     </Routes>
   );
 }
