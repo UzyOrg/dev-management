@@ -88,7 +88,7 @@ export default function PageLayout(props) {
         },
         {
             text: 'Projects',
-            href: '/briefs',
+            href: '/projects',
             icon: <Article />
         },
         {

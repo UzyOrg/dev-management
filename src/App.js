@@ -29,13 +29,13 @@ function App() {
   return (
     <Routes>
         <Route exact path='/' element={<Login />} />
-        <Route exact path='/projects' element={<Projects />} />
-        <Route exact path='/projects/:id' element={<OpenProject />} />
+        {/* <Route exact path='/projects' element={<Projects />} /> */}
+        {/* <Route exact path='/projects/:id' element={<OpenProject />} /> */}
         <Route exact path='/calendar' element={<Calendar />} />
         <Route exact path='/requests' element={<Requests />} />
         <Route exact path='/requests/:id' element={<OpenRequest />} />
-        <Route exact path='/briefs' element={<Briefs />} />
-        <Route exact path='/briefs/:id' element={<OpenBrief />} />
+        <Route exact path='/projects' element={<Briefs />} />
+        <Route exact path='/projects/:id' element={<OpenBrief />} />
         <Route exact path='/reports' element={<Reports />} />
         <Route exact path='/hierarchy' element={<Hierarchy />} />
     </Routes>

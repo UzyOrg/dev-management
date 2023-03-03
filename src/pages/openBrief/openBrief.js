@@ -84,7 +84,7 @@ function OpenBrief() {
     ];
 
     useEffect(() => {
-        axios.get(`http://localhost:7071/api/getById?databaseId=dev&containerId=projects`).then(res => {
+        axios.get(`https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getbyid?containerId=projects&id=${id}`).then(res => {
         console.log('si jalo el getBId')    
         setBrief(res.data);
             if(res.data.milestones) {
@@ -92,7 +92,6 @@ function OpenBrief() {
             }
         })
     }, [])
-
     
     async function getAllUsers() {
         const token = await checkToken();

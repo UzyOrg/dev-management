@@ -6,6 +6,7 @@ import checkToken from "../utils/checkToken";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ButtonBox from "../components/buttonBox/buttonBox";
 import { format } from "date-fns";
+import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
   Typography,
@@ -21,21 +22,23 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 
 function CreativeBriefForm(props) {
   const [nextBriefId, setNextBriefId] = useState("");
-  const navigate = useNavigate();
   const { initialValues, cancel, cancelText } = props;
   const [brief, setBrief] = useState({});
-  const [assignedTo, setAssignedTo] = useState({});
-  let devlopersList = [{
-    displayName: 'Sarah Carter',
-    mail: 'carters@transblue.org'
-  },{
-    displayName: 'Uziel Morales',
-    mail: 'uziel.morales@transblue.com'
-  }]
+  
+  let devlopersList = [
+    {
+      displayName: "Sarah Carter",
+      mail: "carters@transblue.org",
+    },
+    {
+      displayName: "Uziel Morales",
+      mail: "uziel.morales@transblue.com",
+    },
+  ];
   useEffect(() => {
     axios
       .get(
-        "https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/getall?containerId=briefs"
+        "https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getall?databaseId=dev&containerId=projects"
       )
       .then((res) => {
         if (res.data === "No items found") {
@@ -76,7 +79,7 @@ function CreativeBriefForm(props) {
           },
         })
         .then((res) => {
-          console.log(res.data.value);
+          // console.log(res.data.value);
           setUserEmails(res.data.value);
         });
     }
@@ -94,6 +97,7 @@ function CreativeBriefForm(props) {
       id: nextBriefId,
       assignedTo: brief.assignedTo.name,
     };
+    // console.log(newObj)
     axios
       .post(
         `https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/save?databaseId=dev&containerId=projects`,
@@ -103,60 +107,62 @@ function CreativeBriefForm(props) {
         // console.log(res);
         // console.log('socialRequest');
         if (res.statusText === "OK") {
-          console.log(brief.id);
-        //   try {
-        //     axios
-        //       .post(
-        //         `https://graph.microsoft.com/v1.0/me/sendMail`,
-        //         {
-        //           message: {
-        //             subject: "Media Content request created",
-        //             body: {
-        //               contentType: "HTML",
-        //               content: `Hello, <br /><br />A media content has been created by ${localStorage.getItem(
-        //                 "user"
-        //               )}, here is the link:<br /><br />
-        //           <a href='https://m3.evergreenbrands.com/shorts/${
-        //             brief.id
-        //           }'>https://m3.evergreenbrands.com/shorts/${brief.id}</a>
-        //           `,
-        //             },
-        //             toRecipients: [
-        //               {
-        //                 emailAddress: {
-        //                   address: "ralhel@transblue.org",
-        //                 },
-        //               },
-        //             ],
-        //           },
-        //         },
-        //         {
-        //           headers: {
-        //             Authorization: `Bearer ${token}`,
-        //             "Content-type": "application/json",
-        //           },
-        //         }
-        //       )
-        //       .then(() => {
-        //         setBrief({});
-        //       })
-        //       .catch((err) => {
-        //         alert(err);
-        //       });
-        //   } catch (e) {
-        //     console.log(e);
-        //   }
-        //   cancel();
+          setBrief({});
+          props.updateTable(uuidv4())
+          cancel();
+          // console.log(brief.id);
+          //   try {
+          //     axios
+          //       .post(
+          //         `https://graph.microsoft.com/v1.0/me/sendMail`,
+          //         {
+          //           message: {
+          //             subject: "Media Content request created",
+          //             body: {
+          //               contentType: "HTML",
+          //               content: `Hello, <br /><br />A media content has been created by ${localStorage.getItem(
+          //                 "user"
+          //               )}, here is the link:<br /><br />
+          //           <a href='https://m3.evergreenbrands.com/shorts/${
+          //             brief.id
+          //           }'>https://m3.evergreenbrands.com/shorts/${brief.id}</a>
+          //           `,
+          //             },
+          //             toRecipients: [
+          //               {
+          //                 emailAddress: {
+          //                   address: "ralhel@transblue.org",
+          //                 },
+          //               },
+          //             ],
+          //           },
+          //         },
+          //         {
+          //           headers: {
+          //             Authorization: `Bearer ${token}`,
+          //             "Content-type": "application/json",
+          //           },
+          //         }
+          //       )
+          //       .then(() => {
+          //         setBrief({});
+          //       })
+          //       .catch((err) => {
+          //         alert(err);
+          //       });
+          //   } catch (e) {
+          //     console.log(e);
+          //   }
+          //   cancel();
         } else {
         }
       });
-   
   }
 
   return (
     <>
       <Typography variant="h5" sx={{ mb: 3 }}>
-        Request content
+        Request development
       </Typography>
 
       <TextField
@@ -164,7 +170,7 @@ function CreativeBriefForm(props) {
         size="small"
         id="media"
         onChange={handleChange}
-        label="Media needed"
+        label="Development needed"
         sx={{ mb: 3 }}
         fullWidth
       />
@@ -205,12 +211,17 @@ function CreativeBriefForm(props) {
         />
       </LocalizationProvider>
 
-      {userEmails.length > 0 && (
+   
         <Autocomplete
           freeSolo
           renderInput={(params) => (
-            <TextField {...params} id="asign"
-            label="Assigned To" size="small" fullWidth />
+            <TextField
+              {...params}
+              id="asign"
+              label="Assigned To"
+              size="small"
+              fullWidth
+            />
           )}
           options={devlopersList}
           getOptionLabel={(option) => option.displayName || ""}
@@ -223,11 +234,10 @@ function CreativeBriefForm(props) {
                 email: newValue.mail,
               },
             });
-           
           }}
           sx={{ mb: 3 }}
         />
-      )}
+     
 
       <ButtonBox>
         <Button

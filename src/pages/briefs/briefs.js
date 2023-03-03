@@ -20,10 +20,11 @@ function Briefs() {
     const [unfilteredBriefs, setUnfilteredBriefs] = useState([]);
     const [view, setView] = useState('active');
     const [userView, setUserView] = useState('mine');
+    const [updateTable, setupdateTable] = useState("")
     const user = localStorage.getItem('user');
     console.log(user)
     useEffect(() => {
-        axios.get('https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getAll?databaseId=dev&containerId=projects').then(res => {
+        axios.get('https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getall?databaseId=dev&containerId=projects').then(res => {
             console.log('entro')
             if(res.data !== 'No items found') {
                 console.log(res.data)
@@ -37,7 +38,7 @@ function Briefs() {
             setLoading(false);
         }).catch((e)=>console.log(e))
         console.log('salio')
-    }, []);
+    }, [updateTable]);
 
     async function getAllUsers() {
         const token = await checkToken();
@@ -52,6 +53,9 @@ function Briefs() {
 
     useEffect(() => {
         getAllUsers();
+        // axios.post('https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/delete?containerId=projects&id=PJ-62').then((res)=>{
+        // console.log('salio bien el delete')
+        // })
     }, []);
 
     // useEffect(() =>{
@@ -94,7 +98,7 @@ function Briefs() {
         {
           field: "status",
           headerName: "Status",
-          flex: 0.20,
+          flex: 0.26,
           renderCell: (params) => {
             if(params.row.status === "Completed") {return <Typography variant='body2' sx={{color: 'green'}}>Completed</Typography>}
           }
@@ -102,7 +106,7 @@ function Briefs() {
       ];
 
     function redirect(params) {
-        navigate(`/briefs/${params.row.id}`)
+        navigate(`/projects/${params.row.id}`)
     }
 
     function viewStalled() {
@@ -132,9 +136,10 @@ function Briefs() {
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
+                
             >
                 <Box sx={{...style, maxWidth: '600px', p: 3, maxHeight: '90vh', overflowY: 'auto'}}>
-                    <CreativeBriefForm initialValues={{type: 'Branding', location: 'Monroe'}} cancel={() => setOpen(false)} cancelText='Cancel' />
+                    <CreativeBriefForm updateTable={setupdateTable} initialValues={{type: 'Branding', location: 'Monroe'}} cancel={() => setOpen(false)} cancelText='Cancel' />
                 </Box>
             </Modal>
             <PageLayout page='Creative Briefs'>
