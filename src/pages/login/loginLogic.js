@@ -18,7 +18,7 @@ function LoginLogic() {
         localStorage.setItem('access token', loginResponse.accessToken);
         localStorage.setItem('user', loginResponse.account.name);
         localStorage.setItem('mediaMail', loginResponse.account.username);
-        navigate('/requests');
+        navigate('/projects');
     }
 
     return {

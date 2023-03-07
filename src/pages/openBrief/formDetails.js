@@ -11,16 +11,17 @@ const TableRowComp = (props) => {
         </TableRow>
     )
 }
-
 function FormDetails(props) {
     const { brief } = props;
     let rows = {
-        Type: brief.type,
-        Audience: brief.audience,
-        Objective: brief.objective,
-        Content: brief.content,
-        Live: brief.live ? 'Yes' : 'No',
-        'Air Date': brief.airDate ? new Date(brief.airDate).toLocaleString() : 'N/A',
+        Project: brief.name,
+        Details: brief.details,
+        'Assigned To': brief.assignedTo.name,
+        // Audience: brief.audience,
+        // Objective: brief.objective,
+        // Content: brief.content,
+        // Live: brief.live ? 'Yes' : 'No',
+        // 'Air Date': brief.airDate ? new Date(brief.airDate).toLocaleString() : 'N/A',
         'Due Date':   (brief.dueDateType && brief.dueDateType) === 'specificDay'
         ?   new Date(brief.dueDate).toLocaleDateString()
         :   brief.dueDate
@@ -40,9 +41,9 @@ function FormDetails(props) {
 
     return(
         <Table size='small'>
-            {Object.keys(rows).map(row => {
+            {Object.keys(rows).map((row, i) => {
                 return (
-                    <TableRowComp>
+                    <TableRowComp key={i}>
                         <>{row}</>
                         <>{rows[row]}</>
                     </TableRowComp>

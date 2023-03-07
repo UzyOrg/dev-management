@@ -44,8 +44,9 @@ function Calendar() {
     };
 
     useEffect(() => {
-        axios.get('https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/getall?containerId=briefs').then(res => {
-            setBriefs(res.data);
+        axios.get('https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/getall?databaseId=dev&containerId=projects').then(res => {
+            console.log(res.data)    
+        setBriefs(res.data);
             if(res.data !== 'No items found') {
                 let liveEvents = res.data.filter(brief => brief.live).map(brief => {
                     return {
@@ -77,20 +78,20 @@ function Calendar() {
                         backgroundColor: 'green'
                     }
                 });
-                let incomplete = res.data.filter(brief => !brief.completed && brief.milestones.length > 0 && !brief.live).map((brief, index) => {
+                let incomplete = res.data.filter(brief => !brief.completed && brief?.milestones?.length > 0 && !brief.live).map((brief, index) => {
                     let arr = brief.milestones.filter(milestone => milestone.percentComplete !== 100);
                     let status;
                     let subStatus;
 
                     if(arr.length === 0) {
-                        let index = brief.milestones.length - 1;
-                        status = brief.milestones[index].resource;
-                        subStatus = brief.milestones[index].subResource;
+                        let index = brief?.milestones.length - 1;
+                        status = brief?.milestones[index].resource;
+                        subStatus = brief?.milestones[index].subResource;
                     }
 
                     else {
-                        status = brief.milestones.filter(milestone => milestone.percentComplete !== '100')[0].resource;
-                        subStatus = brief.milestones.filter(milestone => milestone.percentComplete !== 100)[0].subResource;
+                        status = brief?.milestones.filter(milestone => milestone.percentComplete !== '100')[0].resource;
+                        subStatus = brief?.milestones.filter(milestone => milestone.percentComplete !== 100)[0].subResource;
                     }
 
                     return {
@@ -256,7 +257,7 @@ function Calendar() {
 
                                 <ButtonBox>
                                     <Button
-                                        onClick={() => navigate(`/briefs/${activeEvent.id}`)}
+                                        onClick={() => navigate(`/projects/${activeEvent.id}`)}
                                         sx={{fontSize: '12px'}}
                                         endIcon={<ArrowRightAlt />}
                                     >

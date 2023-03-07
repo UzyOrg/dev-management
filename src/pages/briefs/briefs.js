@@ -82,7 +82,8 @@ function Briefs() {
 
     const columns = [
         { field: "id", headerName: "ID" },
-        { field: "assignedTo", headerName: "Assigned to", flex:0.20 },
+        { field: "assignedTo", headerName: "Assigned to", flex:0.20, renderCell: (params) =>
+        params.row.assignedTo.name}, 
         {
           field: "date",
           headerName: "Due Date",
@@ -92,7 +93,7 @@ function Briefs() {
               : params.row.dueDate,
         },
     
-        { field: "media", headerName: "project", flex: 0.2 },
+        { field: "name", headerName: "project", flex: 0.2 },
         { field: "link", headerName: "Link", flex: 0.2 },
         { field: "details", headerName: "Description", flex: 0.75 },
         {

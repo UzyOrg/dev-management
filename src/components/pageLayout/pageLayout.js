@@ -81,11 +81,11 @@ export default function PageLayout(props) {
     };
 
     const links = [
-        {
-            text: 'Requests',
-            href: '/requests',
-            icon: <Camera />
-        },
+        // {
+        //     text: 'Requests',
+        //     href: '/requests',
+        //     icon: <Camera />
+        // },
         {
             text: 'Projects',
             href: '/projects',

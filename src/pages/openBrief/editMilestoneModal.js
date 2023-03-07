@@ -43,10 +43,10 @@ function EditMilestoneModal(props) {
     }, [])
 
     const resources = [
+        'DESIGN',
         'DEVELOPMENT',
-        'PRE-PRODUCTION',
-        'PRINCIPAL PHOTOGRAPHY',
-        'POST PRODUCTION',
+        'TESTING',
+        'DEPLOYMENT',
         'COMPLETED'
     ];
 
@@ -77,7 +77,7 @@ function EditMilestoneModal(props) {
             return item
         });
         
-        axios.post(`https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/update?containerId=briefs&id=${id}`, {
+        axios.post(`https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/update?containerId=projects&id=${id}`, {
             milestones: arr
         }).then(res => {
             setMilestones(arr);
@@ -178,8 +178,8 @@ function EditMilestoneModal(props) {
                                     subResource: e.target.value
                                 })}
                             >
-                                <MenuItem key='AWAITING PUBLISHING' value='AWAITING PUBLISHING'>AWAITING PUBLISHING</MenuItem>
-                                <MenuItem key='PUBLISHED' value='PUBLISHED'>PUBLISHED</MenuItem>
+                                <MenuItem key='AWAITING PUBLISHING' value='AWAITING PUBLISHING'>AWAITING DEPLOYMENT</MenuItem>
+                                <MenuItem key='PUBLISHED' value='PUBLISHED'>DEPLOYED</MenuItem>
                             </Select>
                         </FormControl>
                     }

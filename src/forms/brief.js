@@ -90,12 +90,18 @@ function CreativeBriefForm(props) {
     const token = await checkToken();
     brief.created = new Date().getTime();
     brief.id = nextBriefId;
+    brief.history = [{
+      action: `Brief Created and assigned to ${brief.assignedTo.name}`,
+      date: new Date().getTime(),
+      user: localStorage.getItem('user')
+  }];
     let newObj = {
       ...brief,
       dueDate: format(brief.dueDate, "MM/dd/yyyy"),
       status: "In progress",
       id: nextBriefId,
-      assignedTo: brief.assignedTo.name,
+      assignedTo: brief.assignedTo,
+      history: brief.history,
     };
     // console.log(newObj)
     axios
@@ -166,9 +172,9 @@ function CreativeBriefForm(props) {
       </Typography>
 
       <TextField
-        value={brief.media || ""}
+        value={brief.name || ""}
         size="small"
-        id="media"
+        id="name"
         onChange={handleChange}
         label="Development needed"
         sx={{ mb: 3 }}
@@ -210,8 +216,6 @@ function CreativeBriefForm(props) {
           )}
         />
       </LocalizationProvider>
-
-   
         <Autocomplete
           freeSolo
           renderInput={(params) => (
@@ -237,8 +241,6 @@ function CreativeBriefForm(props) {
           }}
           sx={{ mb: 3 }}
         />
-     
-
       <ButtonBox>
         <Button
           sx={{ fontSize: "10px", mr: 1 }}
