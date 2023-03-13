@@ -789,7 +789,7 @@ console.log(assignedTo)
                   }}
                 >
                   <TabPanel value={value} index={0}>
-                    <FormDetails brief={brief} />
+                    <FormDetails brief={brief} setBrief={setBrief} />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     {displayNote && (

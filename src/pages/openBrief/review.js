@@ -45,7 +45,7 @@ function Review(props) {
 
     function saveComment() {
         let comments = review.comments || [];
-        axios.post(`https://my-tb-cors.herokuapp.com/https://tbmedia-fns.azurewebsites.net/api/update?containerId=briefs&id=${brief.id}`, {
+        axios.post(`https://my-tb-cors.herokuapp.com/https://dev-fns.azurewebsites.net/api/update?containerId=projects&id=${brief.id}`, {
             review: {
                 ...review,
                 comments: [{
@@ -86,9 +86,7 @@ function Review(props) {
         <Paper sx={{p: 2}}>
             <Grid container>
                 <Grid item xs={6}>
-                    <Box sx={{mb: 2}}>
-                        <RateReview sx={{verticalAlign: 'middle', mr: 1}} /> Project Review
-                    </Box>
+                    
                 </Grid>
                 <Grid item xs={6}>
                     <Box sx={{width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
@@ -106,7 +104,7 @@ function Review(props) {
                 </Grid>
             </Grid>
 
-            <Grid container>
+            {/* <Grid container>
                 <Grid item xs={2} my='auto'>
                     <Typography variant='body2'>Review Link:</Typography>
                 </Grid>
@@ -163,7 +161,7 @@ function Review(props) {
                 </Grid>
             </Grid>
 
-            <Divider sx={{my: 2}} />
+            <Divider sx={{my: 2}} /> */}
 
             <Grid container>
                 <Grid item xs={2} my='auto'>
